@@ -1,0 +1,2 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"/home/paul/source/breakout/Content/awesomeface.png","/home/paul/source/breakout/Content/bin/DesktopGL/Content/awesomeface.xnb","TextureProcessor","Texture2DContent",59277,1048661,0.1814581
