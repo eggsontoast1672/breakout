@@ -13,4 +13,4 @@ set_property(TARGET breakout PROPERTY C_STANDARD 99)
 
 target_compile_definitions(breakout PRIVATE GLFW_INCLUDE_NONE)
 target_include_directories(breakout PRIVATE include)
-target_link_libraries(breakout PRIVATE ${GLFW_LIBRARIES})
+target_link_libraries(breakout PRIVATE m ${GLFW_LIBRARIES})
