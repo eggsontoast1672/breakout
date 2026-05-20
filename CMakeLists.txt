@@ -6,7 +6,7 @@ project(Breakout LANGUAGES C)
 
 pkg_check_modules(GLFW REQUIRED glfw3)
 
-add_executable(breakout src/glad.c src/main.c)
+add_executable(breakout src/glad.c src/main.c src/window.c)
 
 set_property(TARGET breakout PROPERTY C_EXTENSIONS OFF)
 set_property(TARGET breakout PROPERTY C_STANDARD 99)
