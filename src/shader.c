@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "breakout/logging.h"
+
 #include "glad/glad.h"
 
 #define MAX_SHADER_PATH 256
@@ -76,14 +78,19 @@ static unsigned int create_shader(const char *source, GLenum type) {
     return shader;
 }
 
+static unsigned int create_shader_from_path(const char *path, GLenum type) {
+    char *const source = read_file(path);
+    const unsigned int shader = create_shader(source, type);
+    log_message(LOG_INFO, "Loaded shader '%s' (id %u)\n", path, shader);
+    free(source);
+    return shader;
+}
+
 ShaderProgram shader_program_create(const char *path) {
     const char *const vertex_path = get_shader_path(path, GL_VERTEX_SHADER);
-    char *const vertex_source = read_file(vertex_path);
-    const unsigned int vertex_shader = create_shader(vertex_source, GL_VERTEX_SHADER);
-
+    const unsigned int vertex_shader = create_shader_from_path(vertex_path, GL_VERTEX_SHADER);
     const char *const fragment_path = get_shader_path(path, GL_FRAGMENT_SHADER);
-    char *const fragment_source = read_file(fragment_path);
-    const unsigned int fragment_shader = create_shader(fragment_source, GL_FRAGMENT_SHADER);
+    const unsigned int fragment_shader = create_shader_from_path(fragment_path, GL_FRAGMENT_SHADER);
 
     const unsigned int program = glCreateProgram();
     glAttachShader(program, vertex_shader);
@@ -109,6 +116,8 @@ ShaderProgram shader_program_create(const char *path) {
 
         exit(1);
     }
+
+    log_message(LOG_INFO, "Linked program object (id %u)\n", program);
 
     return (ShaderProgram){.id = program};
 }
