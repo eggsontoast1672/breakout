@@ -40,8 +40,7 @@ static unsigned int create_quad_mesh(void) {
 }
 
 void renderer_init(Renderer *renderer) {
-    renderer->program =
-        shader_program_create("assets/shaders/texture.vert", "assets/shaders/texture.frag");
+    renderer->program = shader_program_create("assets/shaders/texture");
     renderer->vao = create_quad_mesh();
 }
 

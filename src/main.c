@@ -20,9 +20,7 @@ int main(void) {
     window_init_system();
 
     const Window window = window_create(800, 600, "Breakout");
-
-    const ShaderProgram program =
-        shader_program_create("assets/shaders/quad.vert", "assets/shaders/quad.frag");
+    const ShaderProgram program = shader_program_create("assets/shaders/quad");
 
     unsigned int vao;
     glGenVertexArrays(1, &vao);

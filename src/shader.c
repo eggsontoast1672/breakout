@@ -1,9 +1,25 @@
 #include "breakout/shader.h"
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "glad/glad.h"
+
+#define MAX_SHADER_PATH 256
+
+static char *get_shader_path(const char *path, GLenum type) {
+    const char *suffix;
+    switch (type) {
+    case GL_VERTEX_SHADER: suffix = "vert"; break;
+    case GL_FRAGMENT_SHADER: suffix = "frag"; break;
+    default: assert(0 && "unknown shader type");
+    }
+
+    static char full_path[MAX_SHADER_PATH];
+    snprintf(full_path, sizeof full_path, "%s.%s", path, suffix);
+    return full_path;
+}
 
 static char *read_file(const char *path) {
     FILE *const file = fopen(path, "r");
@@ -60,10 +76,13 @@ static unsigned int create_shader(const char *source, GLenum type) {
     return shader;
 }
 
-ShaderProgram shader_program_create(const char *vertex_path, const char *fragment_path) {
+ShaderProgram shader_program_create(const char *path) {
+    const char *const vertex_path = get_shader_path(path, GL_VERTEX_SHADER);
     char *const vertex_source = read_file(vertex_path);
-    char *const fragment_source = read_file(fragment_path);
     const unsigned int vertex_shader = create_shader(vertex_source, GL_VERTEX_SHADER);
+
+    const char *const fragment_path = get_shader_path(path, GL_FRAGMENT_SHADER);
+    char *const fragment_source = read_file(fragment_path);
     const unsigned int fragment_shader = create_shader(fragment_source, GL_FRAGMENT_SHADER);
 
     const unsigned int program = glCreateProgram();
