@@ -5,6 +5,11 @@
 
 #include <glad/glad.h>
 
+static void size_callback(GLFWwindow *window, int width, int height) {
+    (void)window;
+    glViewport(0, 0, width, height);
+}
+
 void window_init_system(void) {
     if (!glfwInit()) {
         const char *description;
@@ -32,6 +37,7 @@ Window window_create(int width, int height, const char *title) {
         exit(1);
     }
 
+    glfwSetWindowSizeCallback(window, size_callback);
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
