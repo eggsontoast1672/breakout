@@ -5,10 +5,10 @@
 
 #include <glad/glad.h>
 
-void renderer_init(Renderer *renderer) {
+static unsigned int create_quad_mesh(void) {
     // clang-format off
 
-    const float vertices[] = {
+    static const float vertices[] = {
         0.0f, 1.0f, 0.0f, 1.0f,
         1.0f, 0.0f, 1.0f, 0.0f,
         0.0f, 0.0f, 0.0f, 0.0f, 
@@ -19,8 +19,9 @@ void renderer_init(Renderer *renderer) {
 
     // clang-format on
 
-    glGenVertexArrays(1, &renderer->vao);
-    glBindVertexArray(renderer->vao);
+    unsigned int vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
 
     unsigned int vbo;
     glGenBuffers(1, &vbo);
@@ -34,6 +35,14 @@ void renderer_init(Renderer *renderer) {
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+
+    return vao;
+}
+
+void renderer_init(Renderer *renderer) {
+    renderer->program =
+        shader_program_create("assets/shaders/texture.vert", "assets/shaders/texture.frag");
+    renderer->vao = create_quad_mesh();
 }
 
 static mat4s compute_model(Rect rect) {

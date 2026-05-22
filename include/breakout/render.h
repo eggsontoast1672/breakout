@@ -2,6 +2,8 @@
 
 #include <cglm/types-struct.h>
 
+#include "breakout/shader.h"
+
 typedef struct {
     float x;
     float y;
@@ -10,7 +12,7 @@ typedef struct {
 } Rect;
 
 typedef struct {
-    // Shader shader;
+    ShaderProgram program;
     unsigned int vao;
     vec3s draw_color;
 } Renderer;
