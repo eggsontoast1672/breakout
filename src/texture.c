@@ -4,9 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <glad/glad.h>
+#include "glad/glad.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
+#include "stb_image.h"
+
+#include "breakout/logging.h"
 
 typedef struct {
     uint8_t *bytes;
@@ -40,6 +42,10 @@ Texture texture_load(const char *path) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    stbi_image_free(data.bytes);
+
+    log_message(LOG_INFO, "Loaded texture '%s' (id %u)\n", path, texture);
 
     return (Texture){.id = texture};
 }

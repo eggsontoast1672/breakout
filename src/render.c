@@ -36,15 +36,15 @@ static unsigned int create_quad_mesh(void) {
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float[4]), 0);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float[4]), (void *)sizeof(float[2]));
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     return vao;
 }
 
 static mat4s create_projection_matrix(void) {
     mat4s matrix;
-    glm_ortho(0.0f, 300.0f, 300.0f, 0.0f, 1.0f, -1.0f, matrix.raw);
+    glm_ortho(0.0f, 800.0f, 0.0f, 600.0f, 1.0f, -1.0f, matrix.raw);
     return matrix;
 }
 
@@ -73,6 +73,7 @@ void renderer_draw_sprite(Renderer renderer, Texture texture, Rect rect) {
 
     shader_program_use(renderer.program);
     glBindVertexArray(renderer.vao);
+    glActiveTexture(GL_TEXTURE0);
     texture_bind(texture);
 
     shader_program_set_uniform_mat4(renderer.program, "u_model", model);

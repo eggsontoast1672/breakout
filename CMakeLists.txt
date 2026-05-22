@@ -9,6 +9,7 @@ pkg_check_modules(GLFW REQUIRED glfw3)
 add_executable(
     breakout
     src/glad.c
+    src/logging.c
     src/main.c
     src/render.c
     src/shader.c
