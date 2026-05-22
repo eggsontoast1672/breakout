@@ -1,5 +1,6 @@
 #include "breakout/render.h"
 
+#include <cglm/cam.h>
 #include <cglm/struct/affine-pre.h>
 #include <cglm/struct/affine.h>
 
@@ -41,10 +42,24 @@ static unsigned int create_quad_mesh(void) {
     return vao;
 }
 
-void renderer_init(Renderer *renderer) {
-    renderer->program = shader_program_create("assets/shaders/texture");
-    renderer->vao = create_quad_mesh();
-    renderer->draw_color = (vec3s){{1.0f, 1.0f, 1.0f}};
+static mat4s create_projection_matrix(void) {
+    mat4s matrix;
+    glm_ortho(0.0f, 300.0f, 300.0f, 0.0f, 1.0f, -1.0f, matrix.raw);
+    return matrix;
+}
+
+Renderer renderer_init(void) {
+    const ShaderProgram program = shader_program_create("assets/shaders/texture");
+    const unsigned int vao = create_quad_mesh();
+    const vec3s draw_color = {{1.0f, 1.0f, 1.0f}};
+
+    shader_program_set_uniform_mat4(program, "u_projection", create_projection_matrix());
+
+    return (Renderer){
+        .program = program,
+        .vao = vao,
+        .draw_color = draw_color,
+    };
 }
 
 static mat4s compute_model(Rect rect) {

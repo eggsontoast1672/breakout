@@ -18,5 +18,5 @@ typedef struct {
     vec3s draw_color;
 } Renderer;
 
-void renderer_init(Renderer *renderer);
+Renderer renderer_init(void);
 void renderer_draw_sprite(Renderer renderer, Texture texture, Rect rect);
