@@ -3,6 +3,7 @@
 #include <cglm/types-struct.h>
 
 #include "breakout/shader.h"
+#include "breakout/texture.h"
 
 typedef struct {
     float x;
@@ -18,4 +19,4 @@ typedef struct {
 } Renderer;
 
 void renderer_init(Renderer *renderer);
-void renderer_draw_sprite(Renderer renderer, Rect rect);
+void renderer_draw_sprite(Renderer renderer, Texture texture, Rect rect);

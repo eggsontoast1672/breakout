@@ -120,3 +120,13 @@ void shader_program_use(ShaderProgram program) {
 void shader_program_unuse(void) {
     glUseProgram(0);
 }
+
+void shader_program_set_uniform_mat4(ShaderProgram program, const char *name, mat4s matrix) {
+    const int location = glGetUniformLocation(program.id, name);
+    glUniformMatrix4fv(location, 1, GL_FALSE, (float *)matrix.raw);
+}
+
+void shader_program_set_uniform_vec3(ShaderProgram program, const char *name, vec3s vector) {
+    const int location = glGetUniformLocation(program.id, name);
+    glUniform3fv(location, 1, vector.raw);
+}

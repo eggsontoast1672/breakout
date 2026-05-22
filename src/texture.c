@@ -51,3 +51,7 @@ void texture_unload(Texture texture) {
 void texture_bind(Texture texture) {
     glBindTexture(GL_TEXTURE_2D, texture.id);
 }
+
+void texture_unbind(void) {
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
