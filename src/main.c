@@ -1,34 +1,51 @@
 #include "glad/glad.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
+#include "breakout/shader.h"
 #include "breakout/window.h"
+
+// clang-format off
+
+static const float vertices[] = {
+    -0.5f,  0.5f,
+     0.5f,  0.5f,
+    -0.5f, -0.5f,
+     0.5f,  0.5f,
+    -0.5f, -0.5f,
+     0.5f, -0.5f,
+};
+
+// clang-format on
 
 int main(void) {
     window_init_system();
 
     const Window window = window_create(800, 600, "Breakout");
 
-    int width, height, nr_channels;
-    stbi_uc *const data = stbi_load("textures/awesomeface.png", &width, &height, &nr_channels, 0);
+    const ShaderProgram program =
+        shader_program_create("assets/shaders/quad.vert", "assets/shaders/quad.frag");
 
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    unsigned int vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    unsigned int vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof vertices, vertices, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float[2]), 0);
 
     while (!window_should_close(window)) {
         window_clear();
+
+        shader_program_use(program);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        shader_program_unuse();
+
         window_swap_buffers(window);
         window_poll_events();
     }
 
-    glDeleteTextures(1, &texture);
-    stbi_image_free(data);
     window_shutdown_system();
 }
