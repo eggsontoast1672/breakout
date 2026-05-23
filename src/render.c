@@ -56,6 +56,7 @@ Renderer renderer_init(void) {
 
     shader_program_use(program);
     shader_program_set_uniform_mat4(program, "u_projection", create_projection_matrix());
+    shader_program_set_uniform_int(program, "u_image", 0);
     shader_program_unuse();
 
     return (Renderer){
@@ -66,9 +67,8 @@ Renderer renderer_init(void) {
 }
 
 static mat4s compute_model(Rect rect) {
-    const mat4s scaling = glms_scale_make((vec3s){{rect.width, rect.height, 1.0f}});
-    const mat4s model = glms_translate(scaling, (vec3s){{rect.x, rect.y, 0}});
-    return model;
+    const mat4s translation = glms_translate_make((vec3s){{rect.x, rect.y, 0.0f}});
+    return glms_scale(translation, (vec3s){{rect.width, rect.height, 1.0f}});
 }
 
 void renderer_draw_sprite(Renderer renderer, Texture texture, Rect rect) {

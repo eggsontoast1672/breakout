@@ -136,6 +136,11 @@ void shader_program_set_uniform_mat4(ShaderProgram program, const char *name, ma
     DEBUG_VALIDATE(glUniformMatrix4fv(location, 1, GL_FALSE, (float *)matrix.raw));
 }
 
+void shader_program_set_uniform_int(ShaderProgram program, const char *name, int value) {
+    const int location = glGetUniformLocation(program.id, name);
+    DEBUG_VALIDATE(glUniform1i(location, value));
+}
+
 void shader_program_set_uniform_vec3(ShaderProgram program, const char *name, vec3s vector) {
     const int location = glGetUniformLocation(program.id, name);
     DEBUG_VALIDATE(glUniform3fv(location, 1, vector.raw));
