@@ -3,6 +3,7 @@
 #include <cglm/cam.h>
 #include <cglm/struct/affine-pre.h>
 #include <cglm/struct/affine.h>
+#include <cglm/struct/mat4.h>
 
 #include "breakout/texture.h"
 
@@ -36,15 +37,15 @@ static unsigned int create_quad_mesh(void) {
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float[4]), 0);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float[4]), (void *)sizeof(float[2]));
 
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // glBindVertexArray(0);
+    // glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     return vao;
 }
 
 static mat4s create_projection_matrix(void) {
     mat4s matrix;
-    glm_ortho(0.0f, 800.0f, 0.0f, 600.0f, 1.0f, -1.0f, matrix.raw);
+    glm_ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f, matrix.raw);
     return matrix;
 }
 
@@ -53,7 +54,9 @@ Renderer renderer_init(void) {
     const unsigned int vao = create_quad_mesh();
     const vec3s draw_color = {{1.0f, 1.0f, 1.0f}};
 
+    shader_program_use(program);
     shader_program_set_uniform_mat4(program, "u_projection", create_projection_matrix());
+    shader_program_unuse();
 
     return (Renderer){
         .program = program,
@@ -63,7 +66,7 @@ Renderer renderer_init(void) {
 }
 
 static mat4s compute_model(Rect rect) {
-    const mat4s scaling = glms_scale_make((vec3s){{rect.width, rect.height, 0}});
+    const mat4s scaling = glms_scale_make((vec3s){{rect.width, rect.height, 1.0f}});
     const mat4s model = glms_translate(scaling, (vec3s){{rect.x, rect.y, 0}});
     return model;
 }
