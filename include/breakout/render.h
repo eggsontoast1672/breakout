@@ -2,6 +2,9 @@
 
 #include <cglm/types-struct.h>
 
+#include "breakout/shader.h"
+#include "breakout/texture.h"
+
 typedef struct {
     float x;
     float y;
@@ -10,10 +13,10 @@ typedef struct {
 } Rect;
 
 typedef struct {
-    // Shader shader;
+    ShaderProgram program;
     unsigned int vao;
     vec3s draw_color;
 } Renderer;
 
-void renderer_init(Renderer *renderer);
-void renderer_draw_sprite(Renderer renderer, Rect rect);
+Renderer renderer_init(void);
+void renderer_draw_sprite(Renderer renderer, Texture texture, Rect rect);
